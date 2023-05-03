@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import categoryService from "../service/categoryService";
+import { makeError } from "../middlewares/errorHandler";
 
 const index = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,7 +15,8 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const name = req.params.name;
     const categorie = await categoryService.findCategoryByName(name);
-    if (!categorie.length) throw new Error("Essa categoria não existe");
+    if (!categorie.length)
+      throw makeError({ message: "Category was not found", status: 404 });
 
     res.status(200).json(categorie);
   } catch (error: unknown) {
@@ -58,7 +60,8 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id);
     const categorie = await categoryService.deleteCategory(id);
 
-    if (!categorie) throw new Error("This category does not exist!");
+    if (!categorie)
+      throw makeError({ message: "This category do not exist", status: 404 });
 
     res.status(200).json({ msg: "Categoria deletada" });
   } catch (error: unknown) {

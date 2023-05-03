@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { makeError } from "../middlewares/errorHandler";
 import productService from "../service/productService";
 
 const index = async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +15,8 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = parseInt(req.params.id);
     const product = await productService.getById(id);
-    if (!product.length) throw new Error("This product does not exist!");
+    if (!product.length)
+      throw makeError({ message: "Product was not found", status: 404 });
 
     res.status(200).json(product);
   } catch (error: unknown) {
@@ -29,7 +31,11 @@ const showByCategory = async (
   try {
     const id = parseInt(req.params.id);
     const product = await productService.getByCategoryId(id);
-    if (!product.length) throw new Error("No products within this category!");
+    if (!product.length)
+      throw makeError({
+        message: "No products with this category",
+        status: 404,
+      });
     res.status(200).json(product);
   } catch (error: unknown) {
     next(error);
@@ -65,7 +71,8 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id);
     const product = await productService.deleteProduct(id);
 
-    if (!product) throw new Error("Esse produto não existe");
+    if (!product)
+      throw makeError({ message: "Product do not exist", status: 404 });
 
     res.status(200).json({ msg: "Produto deletado" });
   } catch (error: unknown) {

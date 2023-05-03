@@ -15,7 +15,7 @@ export const errorHandler = (
   const status = error.status ? error.status : 500;
   const errorResponse = {
     message: error.message ? error.message : "Internal server error.",
-    status: error.status,
+    stack: error.stack,
   };
 
   res.status(status).json(errorResponse);
