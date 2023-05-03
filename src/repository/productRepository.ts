@@ -42,7 +42,7 @@ const index = async () => {
 };
 
 const selectById = async (id: number) => {
-  const a = await knexInstance("products")
+  return await knexInstance("products")
     .select(
       "products.id",
       "products.title",
@@ -56,7 +56,6 @@ const selectById = async (id: number) => {
     )
     .join("categories", "categories.id", "=", "products.category_id")
     .where({ "products.id": id });
-  return a;
 };
 
 const selecByCategoryId = async (id: number) => {

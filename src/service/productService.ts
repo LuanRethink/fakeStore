@@ -1,4 +1,5 @@
 import categoryRepository from "../repository/categoryRepository";
+import { makeError } from "../middlewares/errorHandler";
 import productRepository, {
   Product,
   ProductWithCategoryId,
@@ -24,7 +25,8 @@ const getAll = async () => {
 
 const getById = async (id: number) => {
   const productsArr: any = await productRepository.selectById(id);
-  if (productsArr.length === 0) throw new Error("Product not Found");
+  if (productsArr.length === 0)
+    throw makeError({ message: "Product was not found", status: 404 });
   return productsArr.map((item: Product) => {
     return {
       id: item.id,
@@ -43,6 +45,11 @@ const getById = async (id: number) => {
 
 const insertProduct = async (item: Product) => {
   const category: any = await categoryRepository.selectByName(item.category);
+  if (category.length)
+    throw makeError({
+      message: "A product already have been registered with this name",
+      status: 409,
+    });
   const newProduct: ProductWithCategoryId = {
     title: item.title,
     price: item.price,
@@ -58,7 +65,8 @@ const insertProduct = async (item: Product) => {
 
 const getByCategoryId = async (id: number) => {
   const productsArr = await productRepository.selecByCategoryId(id);
-  if (productsArr.length === 0) throw new Error("Product not Found");
+  if (productsArr.length === 0)
+    throw makeError({ message: "Product was not found", status: 404 });
   return productsArr.map((item: Product) => {
     return {
       id: item.id,
@@ -77,14 +85,14 @@ const getByCategoryId = async (id: number) => {
 
 const hasProductInThisCategory = async (id: number) => {
   const productsArr = await productRepository.selecByCategoryId(id);
-  return !(productsArr.length === 0);
+  return !!productsArr.length;
 };
 
 const updateProduct = async (id: number, item: Product) => {
   const product: any = await productRepository.selectById(id);
-  if (!product) throw new Error("Product was not found");
+  if (!product)
+    throw makeError({ message: "This product does not exists!", status: 404 });
   const category: any = await categoryRepository.selectByName(item.category);
-  console.log(product);
   const newProduct: ProductWithCategoryId = {
     title: item.title,
     price: item.price,
@@ -101,7 +109,8 @@ const updateProduct = async (id: number, item: Product) => {
 
 const deleteProduct = async (id: number) => {
   const product: any = await productRepository.selectById(id);
-  if (!product) throw new Error("Product was not found!");
+  if (!product)
+    throw makeError({ message: "This product does not exists!", status: 404 });
   return await productRepository.remove(id);
 };
 

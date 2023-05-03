@@ -6,7 +6,7 @@ export type ErrorType = {
   stack?: string;
 };
 
-export const ErrorHandler = (
+export const errorHandler = (
   error: ErrorType,
   req: Request,
   res: Response,
@@ -15,7 +15,7 @@ export const ErrorHandler = (
   const status = error.status ? error.status : 500;
   const errorResponse = {
     message: error.message ? error.message : "Internal server error.",
-    stack: error.stack,
+    status: error.status,
   };
 
   res.status(status).json(errorResponse);

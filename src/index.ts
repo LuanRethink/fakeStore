@@ -1,3 +1,4 @@
+import { errorHandler } from "./middlewares/errorHandler";
 import express, { Request, Response } from "express";
 import { router } from "./routes";
 
@@ -10,6 +11,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/", router);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Está rodando na porta ${PORT})`);
