@@ -1,6 +1,6 @@
 import { router as categoriesRoutes } from "./categories";
 import { router as productsRoutes } from "./products";
-import { router as populateRoutes } from "./populate";
+import { router as populateRoutes } from "./populateDatabase";
 import { Router } from "express";
 
 const router: Router = Router();
