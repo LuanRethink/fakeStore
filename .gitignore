@@ -1,4 +1,3 @@
 node_modules
 dev.sqlite3
-populateProducts.ts
-getApiData.ts
+.env
