@@ -3,6 +3,7 @@ import { makeError } from "../middlewares/errorHandler";
 import productRepository, {
   Product,
   ProductWithCategoryId,
+  ProductWIthRating,
 } from "../repository/productRepository";
 
 const getAll = async () => {
@@ -43,21 +44,16 @@ const getById = async (id: number) => {
   });
 };
 
-const insertProduct = async (item: Product) => {
+const insertProduct = async (item: ProductWIthRating) => {
   const category: any = await categoryRepository.selectByName(item.category);
-  if (category.length)
-    throw makeError({
-      message: "A product already have been registered with this name",
-      status: 409,
-    });
   const newProduct: ProductWithCategoryId = {
     title: item.title,
     price: item.price,
     category_id: category[0].id,
     description: item.description,
     image: item.image,
-    rate: item.rate,
-    countRate: item.countRate,
+    rate: item.rating.rate,
+    countRate: item.rating.count,
   };
   const answerId = await productRepository.insert(newProduct);
   return productRepository.selectById(answerId[0]);
