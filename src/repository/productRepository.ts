@@ -24,6 +24,19 @@ export type Product = {
   countRate: number;
 };
 
+export type ProductWIthRating = {
+  id?: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+};
+
 const index = async () => {
   const products: Product[] = await knexInstance("products")
     .select(
