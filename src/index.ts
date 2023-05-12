@@ -7,7 +7,7 @@ const PORT = 3000;
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("send funcionou");
+  res.send("App rodando, visite outras rotas");
 });
 
 app.use("/", router);
