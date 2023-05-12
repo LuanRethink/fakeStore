@@ -15,7 +15,7 @@ const populateCategories = async () => {
 const populateProducts = async () => {
   const productsFromApi = await populateRepository.getProducts();
   const productsToDatabase = await productsFromApi.map(async (product: any) => {
-    return await productService.insertProduct(productsFromApi);
+    return await productService.insertProduct(product);
   });
   return await Promise.all(productsToDatabase);
 };
