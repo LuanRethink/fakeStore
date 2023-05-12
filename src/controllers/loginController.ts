@@ -5,6 +5,7 @@ export type User = {
   id?: number;
   login: string;
   password: string;
+  hash?: string;
 };
 
 const newUser = async (req: Request, res: Response, next: NextFunction) => {
