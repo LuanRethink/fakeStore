@@ -5,8 +5,8 @@ const getProducts = async () => {
 };
 
 const getCategories = async () => {
-  return await fetch("https://fakestoreapi.com/categories").then((response) =>
-    response.json()
+  return await fetch("https://fakestoreapi.com/products/categories").then(
+    (response) => response.json()
   );
 };
 
