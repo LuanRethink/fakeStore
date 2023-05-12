@@ -31,7 +31,9 @@ const loginUser = async ({
   const verify = await bcrypt.compare(password!, userFromDatabase.password!);
   if (!verify) throw makeError({ message: "login error", status: 500 });
   const secret = process.env.SECRET_TOKEN ?? "estavaVazio";
-  return jwt.sign(userFromDatabase, secret, { expiresIn: "10 days" });
+  const jw = jwt.sign(userFromDatabase, secret, { expiresIn: "10 days" });
+  await loginRepository.updateUserToken(userFromDatabase.id!, jw);
+  return jw;
 };
 
 const getUserById = async (id: number) => {
