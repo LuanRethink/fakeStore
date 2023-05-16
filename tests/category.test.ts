@@ -11,14 +11,22 @@ describe("Teste usando as funções do Service de Categorias", () => {
     const newCategory = await categoryService.insertCategory({
       name: "nameCategoryTest",
     });
-    expect(newCategory).toMatchObject({ id: 1, name: "nameCategoryTest" });
+    expect(newCategory).toEqual([1]);
+  });
+
+  it("Encontra uma categoria pelo id", async () => {
+    jest
+      .spyOn(categoryRepository, "selectById")
+      .mockResolvedValueOnce([{ id: 1, name: "categoryName" }]);
+    const returnedCategory = await categoryService.findCategoryById(1);
+    expect(returnedCategory).toMatchObject([{ id: 1, name: "categoryName" }]);
   });
 
   it("Atualiza o nome de uma categoria", async () => {
     jest
       .spyOn(categoryRepository, "selectById")
       .mockResolvedValueOnce([{ id: 1, name: "nameCategoryTest" }]);
-    jest.spyOn(categoryRepository, "update").mockRejectedValueOnce(1);
+    jest.spyOn(categoryRepository, "update").mockRejectedValueOnce([1]);
 
     const updatedCategory = await categoryService.updateCategory(1, {
       name: "categoryNameUpdated",
@@ -28,17 +36,12 @@ describe("Teste usando as funções do Service de Categorias", () => {
       name: "categoryNameUpdated ",
     });
   });
-  it("Deleta uma categoria", async () => {
-    jest.spyOn(categoryRepository, "remove").mockRejectedValueOnce({ id: 1 });
-    const categoryDeleted = await categoryService.deleteCategory(1);
-    expect(categoryDeleted).toMatchObject({ id: 1 });
-  });
 
-  it("Encontra uma categoria pelo id", async () => {
+  it("Deleta uma categoria", async () => {
     jest
-      .spyOn(categoryRepository, "selectById")
-      .mockResolvedValueOnce([{ id: 1, name: "categoryName" }]);
-    const returnedCategory = await categoryService.findCategoryById(1);
-    expect(returnedCategory).toMatch("1");
+      .spyOn(categoryRepository, "remove")
+      .mockRejectedValueOnce({ msg: "Categoria deletada" });
+    const categoryDeleted = await categoryService.deleteCategory(1);
+    expect(categoryDeleted).toMatchObject({ msg: "Categoria deletada" });
   });
 });
