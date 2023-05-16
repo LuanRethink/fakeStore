@@ -38,10 +38,8 @@ describe("Teste usando as funções do Service de Categorias", () => {
   });
 
   it("Deleta uma categoria", async () => {
-    jest
-      .spyOn(categoryRepository, "remove")
-      .mockRejectedValueOnce({ msg: "Categoria deletada" });
+    jest.spyOn(categoryRepository, "remove").mockResolvedValueOnce(1);
     const categoryDeleted = await categoryService.deleteCategory(1);
-    expect(categoryDeleted).toMatchObject({ msg: "Categoria deletada" });
+    expect(categoryDeleted).toEqual(1);
   });
 });
