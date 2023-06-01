@@ -44,7 +44,7 @@ const getById = async (id: number) => {
   });
 };
 
-const insertProduct = async (item: ProductWIthRating) => {
+const insertProduct = async (item: Product) => {
   const category: any = await categoryRepository.selectByName(item.category);
   const newProduct: ProductWithCategoryId = {
     title: item.title,
@@ -52,8 +52,8 @@ const insertProduct = async (item: ProductWIthRating) => {
     category_id: category[0].id,
     description: item.description,
     image: item.image,
-    rate: item.rating.rate,
-    countRate: item.rating.count,
+    rate: item.rate,
+    countRate: item.countRate,
   };
   const answerId = await productRepository.insert(newProduct);
   return productRepository.selectById(answerId[0]);
