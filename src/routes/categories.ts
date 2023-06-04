@@ -5,28 +5,32 @@ import { Router } from "express";
 
 const router: Router = Router();
 
-router.get("/", tokenVerifier, categoriesController.index);
+router.get(
+  "/",
+  // tokenVerifier,
+  categoriesController.index
+);
 router.get(
   "/:name",
-  tokenVerifier,
+  // tokenVerifier,
   validator.nameParamsValidation,
   categoriesController.show
 );
 router.post(
   "/",
-  tokenVerifier,
+  // tokenVerifier,
   validator.categoryValidation,
   categoriesController.insert
 );
 router.put(
   "/:id",
-  tokenVerifier,
+  // tokenVerifier,
   validator.idParamsValidation,
   categoriesController.update
 );
 router.delete(
   "/:id",
-  tokenVerifier,
+  // tokenVerifier,
   validator.idParamsValidation,
   categoriesController.remove
 );

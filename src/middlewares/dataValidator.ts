@@ -96,7 +96,6 @@ const productPostValidation = async (
 ) => {
   try {
     const paramsData = req.body;
-    console.log(paramsData);
     const productSchema = object({
       title: string().required(),
       price: number().min(0).required(),
