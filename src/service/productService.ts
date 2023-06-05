@@ -59,6 +59,21 @@ const insertProduct = async (item: Product) => {
   return productRepository.selectById(answerId[0]);
 };
 
+const insertProductFromApi = async (item: ProductWIthRating) => {
+  const category: any = await categoryRepository.selectByName(item.category);
+  const newProduct: ProductWithCategoryId = {
+    title: item.title,
+    price: item.price,
+    category_id: category[0].id,
+    description: item.description,
+    image: item.image,
+    rate: item.rating.rate,
+    countRate: item.rating.count,
+  };
+  const answerId = await productRepository.insert(newProduct);
+  return productRepository.selectById(answerId[0]);
+};
+
 const getByCategoryId = async (id: number) => {
   const productsArr = await productRepository.selecByCategoryId(id);
   if (productsArr.length === 0)
@@ -114,6 +129,7 @@ export default {
   getAll,
   hasProductInThisCategory,
   getByCategoryId,
+  insertProductFromApi,
   getById,
   insertProduct,
   updateProduct,
