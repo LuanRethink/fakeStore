@@ -26,6 +26,7 @@ export type Product = {
 
 export type ProductWIthRating = {
   id?: number;
+  category_id?: number;
   title: string;
   price: number;
   description: string;
